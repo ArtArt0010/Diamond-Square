@@ -4,7 +4,7 @@
 DiamondSquareGenerate::DiamondSquareGenerate(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
-    m_rng.seed(m_seed);
+
 }
 
 
@@ -70,64 +70,55 @@ void DiamondSquareGenerate::setCamScale(double v)
     update();
 }
 
-void DiamondSquareGenerate::generate()
-{
-    m_rng.seed(m_seed);
-    const int size = mapSize();
 
-    m_heightMap.assign(size, QVector<double>(size, 0.0));
-
-    // четыре угла
-    m_heightMap[0][0] = randomRange(-m_offset, m_offset);
-    m_heightMap[0][size - 1] = randomRange(-m_offset, m_offset);
-    m_heightMap[size - 1][0] = randomRange(-m_offset, m_offset);
-    m_heightMap[size - 1][size-1] = randomRange(-m_offset, m_offset);
-
-    double scale = m_offset;
-
-    for (int step = size - 1; step > 1; step /= 2)
-    {
-        scale *= m_roughness;   // амплитуда уменьшается на каждом уровне
-
-        // Diamond: центр каждого квадрата
-        for (int y = 0; y < size - 1; y += step)
-            for (int x = 0; x < size - 1; x += step)
-                diamondStep(x, y, step, scale);
-
-        // Square: середины рёбер
-        int half = step / 2;
-        for (int y = 0; y < size; y += half)
-            for (int x = (y / half % 2 == 0) ? half : 0; x < size; x += step)
-                squareStep(x, y, half, scale);
-    }
-
-    update();   // перерисовать
-
-
-}
 Chunk DiamondSquareGenerate::generateChunk(int cx, int cy)
 {
     Chunk chunk;
     chunk.cx = cx;
     chunk.cy = cy;
-
     const int N = m_chunkSize;
     const int step = N - 1;
     chunk.heightMap.assign(N, QVector<double>(N, 0.0));
 
-    // Углы — детерминированы по мировым координатам
-    // Соседние чанки получат те же значения на общих углах
-    chunk.heightMap[0][0]         = cornerValue(cx * step,       cy * step);
-    chunk.heightMap[0][N-1]       = cornerValue((cx+1) * step,   cy * step);
-    chunk.heightMap[N-1][0]       = cornerValue(cx * step,       (cy+1) * step);
-    chunk.heightMap[N-1][N-1]     = cornerValue((cx+1) * step,   (cy+1) * step);
+   std::mt19937 rng(m_seed ^ (uint32_t)(cx * 1234567u) ^ (uint32_t)(cy * 7654321u));
+    // Углы
+    chunk.heightMap[0][0] = cornerValue(cx * step, cy * step);
+    chunk.heightMap[0][N-1] = cornerValue((cx+1) * step, cy * step);
+    chunk.heightMap[N-1][0] = cornerValue(cx * step, (cy+1) * step);
+    chunk.heightMap[N-1][N-1] = cornerValue((cx+1) * step, (cy+1) * step);
 
-    // RNG только для внутренних точек
-    std::mt19937 rng(m_seed ^ (uint32_t)(cx * 1234567u) ^ (uint32_t)(cy * 7654321u));
-    auto rand = [&](double a, double b) {
-        std::uniform_real_distribution<double> d(a, b);
-        return d(rng);
-    };
+    // Загружаем целые края от готовых соседей
+    bool topEx  = m_chunks.contains(QPoint(cx, cy-1));
+    bool bottomEx = m_chunks.contains(QPoint(cx, cy+1));
+    bool leftEx = m_chunks.contains(QPoint(cx-1, cy));
+    bool rightEx = m_chunks.contains(QPoint(cx+1, cy));
+
+
+    // Если сосед уже существует — копируем его край целиком
+    if (topEx){
+        for (int x = 0; x < N; x++){
+            chunk.heightMap[0][x] = m_chunks[QPoint(cx, cy-1)].heightMap[N-1][x];
+        }
+    }
+
+    if (bottomEx){
+        for (int x = 0; x < N; x++){
+            chunk.heightMap[N-1][x] = m_chunks[QPoint(cx, cy+1)].heightMap[0][x];
+        }
+    }
+
+    if (leftEx){
+        for (int y = 0; y < N; y++){
+            chunk.heightMap[y][0] = m_chunks[QPoint(cx-1, cy)].heightMap[y][N-1];
+        }
+    }
+
+    if (rightEx){
+        for (int y = 0; y < N; y++){
+            chunk.heightMap[y][N-1] = m_chunks[QPoint(cx+1, cy)].heightMap[y][0];
+        }
+    }
+
 
     double scale = m_offset;
 
@@ -139,22 +130,32 @@ Chunk DiamondSquareGenerate::generateChunk(int cx, int cy)
         // Diamond
         for (int y = 0; y < N - 1; y += step2)
             for (int x = 0; x < N - 1; x += step2) {
-                double avg = (chunk.heightMap[y][x]
-                              + chunk.heightMap[y][x + step2]
-                              + chunk.heightMap[y + step2][x]
-                              + chunk.heightMap[y + step2][x + step2]) * 0.25;
-                chunk.heightMap[y + half][x + half] = avg + rand(-scale, scale);
+                double avg = (chunk.heightMap[y][x] // ерхний левый
+                              + chunk.heightMap[y][x+step2] //верхний правый
+                              + chunk.heightMap[y+step2][x] //нижний левый
+                              + chunk.heightMap[y+step2][x+step2]) * 0.25; //нижний правый, среднее четырёх углов
+
+                chunk.heightMap[y+half][x+half] = avg + chunkRand(rng,-scale, scale); //случайное смещение центра
             }
 
         // Square
         for (int y = 0; y < N; y += half)
-            for (int x = (y / half) % 2 ? 0 : half; x < N; x += step2) {
+            for (int x = (y/half) % 2 ? 0 : half; x < N; x += step2)
+            {
+                // пропускаем точки на краях где сосед уже всё задал
+                bool onEdge = (topEx    && y == 0)   ||
+                              (bottomEx && y == N-1) ||
+                              (leftEx   && x == 0)   ||
+                              (rightEx  && x == N-1);
+                if (onEdge) continue;
+
                 double sum = 0; int cnt = 0;
-                if (x - half >= 0) { sum += chunk.heightMap[y][x-half]; cnt++; }
-                if (x + half < N)  { sum += chunk.heightMap[y][x+half]; cnt++; }
-                if (y - half >= 0) { sum += chunk.heightMap[y-half][x]; cnt++; }
-                if (y + half < N)  { sum += chunk.heightMap[y+half][x]; cnt++; }
-                chunk.heightMap[y][x] = sum / cnt + rand(-scale, scale);
+                if (x-half >= 0) { sum += chunk.heightMap[y][x-half]; cnt++; }
+                if (x+half < N)  { sum += chunk.heightMap[y][x+half]; cnt++; }
+                if (y-half >= 0) { sum += chunk.heightMap[y-half][x]; cnt++; }
+                if (y+half < N)  { sum += chunk.heightMap[y+half][x]; cnt++; }
+                if (cnt > 0)
+                    chunk.heightMap[y][x] = sum / cnt + chunkRand(rng,-scale, scale);
             }
     }
 
@@ -183,92 +184,15 @@ void DiamondSquareGenerate::updateChanks()
     update();
 }
 
-double DiamondSquareGenerate::randomRange(double min, double max)
+
+
+double DiamondSquareGenerate::chunkRand(std::mt19937 &rng, double a, double b)
 {
-    std::uniform_real_distribution<double> dist(min, max);
-    return dist(m_rng);
+    std::uniform_real_distribution<double> d(a, b);
+    return d(rng);
 }
 
-void DiamondSquareGenerate::diamondStep(int x, int y, int step, double scale)
-{
-    int half = step/2;
-    double avg = (m_heightMap[y][x]
-                  + m_heightMap[y][x + step]
-                  + m_heightMap[y + step][x]
-                  + m_heightMap[y + step][x + step]) * 0.25;
-    m_heightMap[y + half][x + half] = avg + randomRange(-scale, scale);
-}
 
-void DiamondSquareGenerate::squareStep(int x, int y, int half, double scale)
-{
-    int size = mapSize();
-    double sum = 0.0;
-    int count = 0;
-
-    // сверху
-    if (y - half >= 0)    { sum += m_heightMap[y - half][x]; count++; }
-    // снизу
-    if (y + half < size)  { sum += m_heightMap[y + half][x]; count++; }
-    // слева
-    if (x - half >= 0)    { sum += m_heightMap[y][x - half]; count++; }
-    // справа
-    if (x + half < size)  { sum += m_heightMap[y][x + half]; count++; }
-
-    m_heightMap[y][x] = sum / count + randomRange(-scale, scale);
-}
-double DiamondSquareGenerate::heightValue(int x, int y)
-{
-    double amplitude = 1.0;
-    double frequency = 0.005;   // <- это делает “континенты”
-    double result = 0.0;
-
-    for (int i = 0; i < 5; i++)
-    {
-        double fx = x * frequency;
-        double fy = y * frequency;
-
-        double ix = std::floor(fx);
-        double iy = std::floor(fy);
-
-        double tx = fx - ix;
-        double ty = fy - iy;
-
-        auto h = [&](int px, int py)
-        {
-            uint32_t n = px * 73856093u ^ py * 19349663u ^ m_seed;
-            n = (n << 13) ^ n;
-            return 1.0 - ((n * (n * n * 15731u + 789221u) + 1376312589u)
-                          & 0x7fffffff) / 1073741824.0;
-        };
-
-        double a = h(ix,     iy);
-        double b = h(ix + 1, iy);
-        double c = h(ix,     iy + 1);
-        double d = h(ix + 1, iy + 1);
-
-        double u = tx * tx * (3 - 2 * tx);
-        double v = ty * ty * (3 - 2 * ty);
-
-        double top = a + (b - a) * u;
-        double bottom = c + (d - c) * u;
-        double value = top + (bottom - top) * v;
-
-        result += value * amplitude;
-
-        amplitude *= 0.5;
-        frequency *= 2.0;
-    }
-
-    return result;
-}
-
-double DiamondSquareGenerate::hash(int x, int y) const
-{
-    uint32_t n = x * 73856093u ^ y * 19349663u ^ m_seed;
-    n = (n << 13) ^ n;
-    return 1.0 - ((n * (n * n * 15731u + 789221u) + 1376312589u)
-                  & 0x7fffffff) / 1073741824.0;
-}
 
 double DiamondSquareGenerate::cornerValue(int worldX, int worldY)
 {
@@ -281,7 +205,7 @@ double DiamondSquareGenerate::cornerValue(int worldX, int worldY)
 
 QColor DiamondSquareGenerate::heightToColor(double t)
 {
-    // Уровни: глубокая вода / вода / песок / трава / горы / снег
+
     struct Stop { double t; QColor color; };
     static const Stop stops[] = {
         { 0.00, QColor(  0,  20,  80) },  // глубокая вода
@@ -294,7 +218,7 @@ QColor DiamondSquareGenerate::heightToColor(double t)
     };
     constexpr int N = sizeof(stops) / sizeof(stops[0]);
 
-    // Линейная интерполяция между ближайшими стопами
+
     for (int i = 1; i < N; i++) {
         if (t <= stops[i].t) {
             double f = (t - stops[i-1].t) / (stops[i].t - stops[i-1].t);
@@ -350,6 +274,6 @@ void DiamondSquareGenerate::componentComplete()
 {
     QQuickPaintedItem::componentComplete();
 
-    generate();
+
 }
 

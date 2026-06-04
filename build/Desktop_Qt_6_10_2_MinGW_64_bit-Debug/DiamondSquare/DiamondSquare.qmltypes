@@ -71,10 +71,10 @@ Module {
             index: 5
             lineNumber: 32
         }
-        Signal { name: "offsetChanged"; lineNumber: 55 }
-        Signal { name: "roughnessChanged"; lineNumber: 56 }
-        Signal { name: "seedChanged"; lineNumber: 57 }
-        Signal { name: "waterLevelChanged"; lineNumber: 58 }
-        Signal { name: "camChanged"; lineNumber: 59 }
+        Signal { name: "offsetChanged"; lineNumber: 54 }
+        Signal { name: "roughnessChanged"; lineNumber: 55 }
+        Signal { name: "seedChanged"; lineNumber: 56 }
+        Signal { name: "waterLevelChanged"; lineNumber: 57 }
+        Signal { name: "camChanged"; lineNumber: 58 }
     }
 }

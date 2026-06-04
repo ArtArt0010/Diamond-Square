@@ -46,7 +46,6 @@ public:
     void setCamX(double x);
     void setCamY(double y);
     void setCamScale(double v);
-    int mapSize() const{return (1 << m_power) + 1;}
     void paint(QPainter *painter) override;
 
 
@@ -61,16 +60,10 @@ signals:
 
 
 private:
-    void generate();
+
     Chunk generateChunk(int cx, int cy);
     void updateChanks();
-    double randomRange(double min, double max);
-
-    void diamondStep(int x, int y, int step, double scale);
-    void squareStep(int x, int y, int half, double scale);
-
-    double heightValue(int x, int y);
-    double hash(int x, int y) const;
+    double chunkRand(std::mt19937 &rng, double a, double b);
 
     double cornerValue(int worldX, int worldY);
 
@@ -80,15 +73,15 @@ private:
 
 
 private:
-    QVector<QVector<double>> m_heightMap;
+
     double m_roughness = 0.5;      // шероховатость
     double m_offset = 150.0;       // начальная амплитуда
     double m_waterLevel = 0.5;
     int m_chunkSize = 33;
     int m_viewRadius = 2;
-    int m_power = 8;               // размер = 2^power + 1
+
     quint32 m_seed = 12345;
-    std::mt19937 m_rng;
+
     double m_camX = 0.0;
     double m_camY = 0.0;
     double m_camScale = 4.0;
