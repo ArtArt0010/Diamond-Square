@@ -1,0 +1,6 @@
+module DiamondSquare
+typeinfo DiamondSquare.qmltypes
+prefer :/DiamondSquare/
+Main 1.0 Main.qml
+depends QtQuick
+

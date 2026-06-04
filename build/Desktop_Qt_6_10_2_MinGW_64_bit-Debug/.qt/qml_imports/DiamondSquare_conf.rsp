@@ -1,0 +1,14 @@
+-rootPath
+D:/QT/Projects/DiamondSquare
+-cmake-output
+-output-file
+D:/QT/Projects/DiamondSquare/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/.qt/qml_imports/DiamondSquare_conf.cmake
+-importPath
+D:/QT/Projects/DiamondSquare/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug
+-importPath
+D:/QT/Projects/DiamondSquare/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/DiamondSquare
+-importPath
+D:/QT/6.10.2/mingw_64/qml
+-qrcFiles
+D:/QT/Projects/DiamondSquare/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/.qt/rcc/qmake_DiamondSquare.qrc
+D:/QT/Projects/DiamondSquare/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug/.qt/rcc/DiamondSquare_raw_qml_0.qrc

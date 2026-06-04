@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/DiamondSquare/">
+    <file alias="Main.qml">D:/QT/Projects/DiamondSquare/Main.qml</file>
+  </qresource>
+</RCC>
+

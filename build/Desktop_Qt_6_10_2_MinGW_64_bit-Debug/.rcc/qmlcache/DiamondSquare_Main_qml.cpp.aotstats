@@ -1,0 +1,199 @@
+{
+    "formatRevision": 1,
+    "modules": [
+        {
+            "moduleFiles": [
+                {
+                    "entries": [
+                        {
+                            "codegenResult": 2,
+                            "column": 20,
+                            "durationMicroseconds": 0,
+                            "functionName": "roughness",
+                            "line": 18,
+                            "message": "Cannot retrieve a non-object type by ID: roughSlider"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 0,
+                            "functionName": "waterLevel",
+                            "line": 19,
+                            "message": "Cannot retrieve a non-object type by ID: waterSlider"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 15,
+                            "durationMicroseconds": 0,
+                            "functionName": "seed",
+                            "line": 20,
+                            "message": "Cannot retrieve a non-object type by ID: seedT"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 15,
+                            "durationMicroseconds": 0,
+                            "functionName": "camX",
+                            "line": 22,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 15,
+                            "durationMicroseconds": 0,
+                            "functionName": "camY",
+                            "line": 23,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 19,
+                            "durationMicroseconds": 0,
+                            "functionName": "camScale",
+                            "line": 24,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 0,
+                            "functionName": "fill",
+                            "line": 17,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "acceptedButtons",
+                            "line": 29,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 20,
+                            "durationMicroseconds": 0,
+                            "functionName": "onPressed",
+                            "line": 34,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 20,
+                            "durationMicroseconds": 0,
+                            "functionName": "onPressed",
+                            "line": 34,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 0,
+                            "functionName": "onPositionChanged",
+                            "line": 39,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 0,
+                            "functionName": "onPositionChanged",
+                            "line": 39,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 18,
+                            "durationMicroseconds": 0,
+                            "functionName": "onWheel",
+                            "line": 49,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 18,
+                            "durationMicroseconds": 0,
+                            "functionName": "onWheel",
+                            "line": 49,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 0,
+                            "functionName": "fill",
+                            "line": 28,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "top",
+                            "line": 63,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 0,
+                            "functionName": "right",
+                            "line": 64,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 29,
+                            "durationMicroseconds": 0,
+                            "functionName": "bottom",
+                            "line": 65,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 0,
+                            "functionName": "contentHeight",
+                            "line": 74,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 0,
+                            "functionName": "fill",
+                            "line": 72,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 79,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 82,
+                            "message": "Cannot retrieve a non-object type by ID: roughSlider"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 94,
+                            "message": "Cannot retrieve a non-object type by ID: waterSlider"
+                        }
+                    ],
+                    "filePath": "D:/QT/Projects/DiamondSquare/Main.qml"
+                }
+            ],
+            "moduleId": "DiamondSquare(DiamondSquare)"
+        }
+    ]
+}

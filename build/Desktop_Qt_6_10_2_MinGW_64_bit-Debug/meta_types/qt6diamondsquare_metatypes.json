@@ -1,0 +1,165 @@
+[
+    {
+        "classes": [
+            {
+                "classInfos": [
+                    {
+                        "name": "QML.Element",
+                        "value": "auto"
+                    },
+                    {
+                        "name": "QML.Element",
+                        "value": "DiamondSquare"
+                    }
+                ],
+                "className": "DiamondSquareGenerate",
+                "lineNumber": 16,
+                "object": true,
+                "properties": [
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 0,
+                        "lineNumber": 22,
+                        "name": "waterLevel",
+                        "notify": "waterLevelChanged",
+                        "read": "waterLevel",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "double",
+                        "user": false,
+                        "write": "setWaterLevel"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 1,
+                        "lineNumber": 23,
+                        "name": "roughness",
+                        "notify": "roughnessChanged",
+                        "read": "roughness",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "double",
+                        "user": false,
+                        "write": "setRoughness"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 2,
+                        "lineNumber": 24,
+                        "name": "seed",
+                        "notify": "seedChanged",
+                        "read": "seed",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "quint32",
+                        "user": false,
+                        "write": "setSeed"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 3,
+                        "lineNumber": 26,
+                        "name": "camX",
+                        "notify": "camChanged",
+                        "read": "camX",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "double",
+                        "user": false,
+                        "write": "setCamX"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 4,
+                        "lineNumber": 27,
+                        "name": "camY",
+                        "notify": "camChanged",
+                        "read": "camY",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "double",
+                        "user": false,
+                        "write": "setCamY"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": false,
+                        "index": 5,
+                        "lineNumber": 28,
+                        "name": "camScale",
+                        "notify": "camChanged",
+                        "read": "camScale",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "double",
+                        "user": false,
+                        "write": "setCamScale"
+                    }
+                ],
+                "qualifiedClassName": "DiamondSquareGenerate",
+                "signals": [
+                    {
+                        "access": "public",
+                        "index": 0,
+                        "lineNumber": 58,
+                        "name": "offsetChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "index": 1,
+                        "lineNumber": 59,
+                        "name": "roughnessChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "index": 2,
+                        "lineNumber": 60,
+                        "name": "seedChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "index": 3,
+                        "lineNumber": 61,
+                        "name": "waterLevelChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "index": 4,
+                        "lineNumber": 62,
+                        "name": "camChanged",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QQuickPaintedItem"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "diamondsquaregenerate.h",
+        "outputRevision": 69
+    }
+]

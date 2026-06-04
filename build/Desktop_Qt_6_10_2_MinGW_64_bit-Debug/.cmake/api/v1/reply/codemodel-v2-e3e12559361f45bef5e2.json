@@ -1,0 +1,204 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "DiamondSquare",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare-Debug-a6942576bde0ff8d688e.json",
+					"name" : "DiamondSquare",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_autogen-Debug-3f0f206669ae295cc696.json",
+					"name" : "DiamondSquare_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_autogen_timestamp_deps-Debug-b4c6833db6b3b3deb138.json",
+					"name" : "DiamondSquare_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_copy_qml::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_copy_qml-Debug-81d93495a9b9b2be24be.json",
+					"name" : "DiamondSquare_copy_qml",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_copy_res::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_copy_res-Debug-cf1ede38c6c30b2d4df5.json",
+					"name" : "DiamondSquare_copy_res",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_qmlimportscan::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_qmlimportscan-Debug-cdad980198d39d8e7d4d.json",
+					"name" : "DiamondSquare_qmlimportscan",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_qmllint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_qmllint-Debug-2cb45ba636a4edcd80e3.json",
+					"name" : "DiamondSquare_qmllint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_qmllint_json::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_qmllint_json-Debug-379338bf1b5b42a3f4fd.json",
+					"name" : "DiamondSquare_qmllint_json",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_qmllint_module::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_qmllint_module-Debug-956438f977e74c96637b.json",
+					"name" : "DiamondSquare_qmllint_module",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "DiamondSquare_qmltyperegistration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-DiamondSquare_qmltyperegistration-Debug-1ab2109c85ad0302a2c7.json",
+					"name" : "DiamondSquare_qmltyperegistration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_aotstats::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_aotstats-Debug-ec8334ecc440357ee495.json",
+					"name" : "all_aotstats",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint-Debug-7e21b0ff5a828f3f0b97.json",
+					"name" : "all_qmllint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint_json::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint_json-Debug-304597c8208086124492.json",
+					"name" : "all_qmllint_json",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmllint_module::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmllint_module-Debug-b301b1e40d7fe672370e.json",
+					"name" : "all_qmllint_module",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "all_qmltyperegistrations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-all_qmltyperegistrations-Debug-836e52f78b7c0344968d.json",
+					"name" : "all_qmltyperegistrations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "generate_qmlls_build_ini_file::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-generate_qmlls_build_ini_file-Debug-33c1a8777eb30037a382.json",
+					"name" : "generate_qmlls_build_ini_file",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "module_DiamondSquare_aotstats_target::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-module_DiamondSquare_aotstats_target-Debug-2da03944ff6e79978545.json",
+					"name" : "module_DiamondSquare_aotstats_target",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/QT/Projects/DiamondSquare/build/Desktop_Qt_6_10_2_MinGW_64_bit-Debug",
+		"source" : "D:/QT/Projects/DiamondSquare"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
