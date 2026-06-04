@@ -8,7 +8,7 @@ import QtQuick.tooling 1.2
 Module {
     Component {
         file: "diamondsquaregenerate.h"
-        lineNumber: 16
+        lineNumber: 18
         name: "DiamondSquareGenerate"
         accessSemantics: "reference"
         prototype: "QQuickPaintedItem"
@@ -24,7 +24,7 @@ Module {
             write: "setWaterLevel"
             notify: "waterLevelChanged"
             index: 0
-            lineNumber: 22
+            lineNumber: 25
         }
         Property {
             name: "roughness"
@@ -33,7 +33,7 @@ Module {
             write: "setRoughness"
             notify: "roughnessChanged"
             index: 1
-            lineNumber: 23
+            lineNumber: 26
         }
         Property {
             name: "seed"
@@ -42,7 +42,7 @@ Module {
             write: "setSeed"
             notify: "seedChanged"
             index: 2
-            lineNumber: 24
+            lineNumber: 27
         }
         Property {
             name: "camX"
@@ -51,7 +51,7 @@ Module {
             write: "setCamX"
             notify: "camChanged"
             index: 3
-            lineNumber: 26
+            lineNumber: 30
         }
         Property {
             name: "camY"
@@ -60,7 +60,7 @@ Module {
             write: "setCamY"
             notify: "camChanged"
             index: 4
-            lineNumber: 27
+            lineNumber: 31
         }
         Property {
             name: "camScale"
@@ -69,12 +69,12 @@ Module {
             write: "setCamScale"
             notify: "camChanged"
             index: 5
-            lineNumber: 28
+            lineNumber: 32
         }
-        Signal { name: "offsetChanged"; lineNumber: 58 }
-        Signal { name: "roughnessChanged"; lineNumber: 59 }
-        Signal { name: "seedChanged"; lineNumber: 60 }
-        Signal { name: "waterLevelChanged"; lineNumber: 61 }
-        Signal { name: "camChanged"; lineNumber: 62 }
+        Signal { name: "offsetChanged"; lineNumber: 55 }
+        Signal { name: "roughnessChanged"; lineNumber: 56 }
+        Signal { name: "seedChanged"; lineNumber: 57 }
+        Signal { name: "waterLevelChanged"; lineNumber: 58 }
+        Signal { name: "camChanged"; lineNumber: 59 }
     }
 }

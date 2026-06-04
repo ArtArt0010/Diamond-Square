@@ -15,7 +15,6 @@ void DiamondSquareGenerate::setRoughness(double v)
     m_roughness = v;
     emit roughnessChanged();
     m_chunks.clear();
-    m_cache.clear();
     updateChanks();
     update();
 
@@ -28,7 +27,6 @@ void DiamondSquareGenerate::setWaterLevel(double v)
     m_waterLevel = v;
     emit waterLevelChanged();
     m_chunks.clear();
-    m_cache.clear();
     updateChanks();
     update();
 }
@@ -40,7 +38,6 @@ void DiamondSquareGenerate::setSeed(quint32 s)
 
     m_seed = s;
     emit seedChanged();
-    m_cache.clear();
     m_chunks.clear();
     updateChanks();
     update();
@@ -73,7 +70,41 @@ void DiamondSquareGenerate::setCamScale(double v)
     update();
 }
 
+void DiamondSquareGenerate::generate()
+{
+    m_rng.seed(m_seed);
+    const int size = mapSize();
 
+    m_heightMap.assign(size, QVector<double>(size, 0.0));
+
+    // четыре угла
+    m_heightMap[0][0] = randomRange(-m_offset, m_offset);
+    m_heightMap[0][size - 1] = randomRange(-m_offset, m_offset);
+    m_heightMap[size - 1][0] = randomRange(-m_offset, m_offset);
+    m_heightMap[size - 1][size-1] = randomRange(-m_offset, m_offset);
+
+    double scale = m_offset;
+
+    for (int step = size - 1; step > 1; step /= 2)
+    {
+        scale *= m_roughness;   // амплитуда уменьшается на каждом уровне
+
+        // Diamond: центр каждого квадрата
+        for (int y = 0; y < size - 1; y += step)
+            for (int x = 0; x < size - 1; x += step)
+                diamondStep(x, y, step, scale);
+
+        // Square: середины рёбер
+        int half = step / 2;
+        for (int y = 0; y < size; y += half)
+            for (int x = (y / half % 2 == 0) ? half : 0; x < size; x += step)
+                squareStep(x, y, half, scale);
+    }
+
+    update();   // перерисовать
+
+
+}
 Chunk DiamondSquareGenerate::generateChunk(int cx, int cy)
 {
     Chunk chunk;
@@ -84,18 +115,52 @@ Chunk DiamondSquareGenerate::generateChunk(int cx, int cy)
     const int step = N - 1;
     chunk.heightMap.assign(N, QVector<double>(N, 0.0));
 
-    for (int y = 0; y < N; y++)
-        for (int x = 0; x < N; x++)
-        {
-            int wx = cx * step + x;
-            int wy = cy * step + y;
-           chunk.heightMap[y][x] = getHeight(wx, wy);
-        }
+    // Углы — детерминированы по мировым координатам
+    // Соседние чанки получат те же значения на общих углах
+    chunk.heightMap[0][0]         = cornerValue(cx * step,       cy * step);
+    chunk.heightMap[0][N-1]       = cornerValue((cx+1) * step,   cy * step);
+    chunk.heightMap[N-1][0]       = cornerValue(cx * step,       (cy+1) * step);
+    chunk.heightMap[N-1][N-1]     = cornerValue((cx+1) * step,   (cy+1) * step);
+
+    // RNG только для внутренних точек
+    std::mt19937 rng(m_seed ^ (uint32_t)(cx * 1234567u) ^ (uint32_t)(cy * 7654321u));
+    auto rand = [&](double a, double b) {
+        std::uniform_real_distribution<double> d(a, b);
+        return d(rng);
+    };
+
+    double scale = m_offset;
+
+    for (int step2 = N - 1; step2 > 1; step2 /= 2)
+    {
+        scale *= m_roughness;
+        int half = step2 / 2;
+
+        // Diamond
+        for (int y = 0; y < N - 1; y += step2)
+            for (int x = 0; x < N - 1; x += step2) {
+                double avg = (chunk.heightMap[y][x]
+                              + chunk.heightMap[y][x + step2]
+                              + chunk.heightMap[y + step2][x]
+                              + chunk.heightMap[y + step2][x + step2]) * 0.25;
+                chunk.heightMap[y + half][x + half] = avg + rand(-scale, scale);
+            }
+
+        // Square
+        for (int y = 0; y < N; y += half)
+            for (int x = (y / half) % 2 ? 0 : half; x < N; x += step2) {
+                double sum = 0; int cnt = 0;
+                if (x - half >= 0) { sum += chunk.heightMap[y][x-half]; cnt++; }
+                if (x + half < N)  { sum += chunk.heightMap[y][x+half]; cnt++; }
+                if (y - half >= 0) { sum += chunk.heightMap[y-half][x]; cnt++; }
+                if (y + half < N)  { sum += chunk.heightMap[y+half][x]; cnt++; }
+                chunk.heightMap[y][x] = sum / cnt + rand(-scale, scale);
+            }
+    }
 
     chunk.generated = true;
     return chunk;
 }
-
 
 void DiamondSquareGenerate::updateChanks()
 {
@@ -124,7 +189,78 @@ double DiamondSquareGenerate::randomRange(double min, double max)
     return dist(m_rng);
 }
 
+void DiamondSquareGenerate::diamondStep(int x, int y, int step, double scale)
+{
+    int half = step/2;
+    double avg = (m_heightMap[y][x]
+                  + m_heightMap[y][x + step]
+                  + m_heightMap[y + step][x]
+                  + m_heightMap[y + step][x + step]) * 0.25;
+    m_heightMap[y + half][x + half] = avg + randomRange(-scale, scale);
+}
 
+void DiamondSquareGenerate::squareStep(int x, int y, int half, double scale)
+{
+    int size = mapSize();
+    double sum = 0.0;
+    int count = 0;
+
+    // сверху
+    if (y - half >= 0)    { sum += m_heightMap[y - half][x]; count++; }
+    // снизу
+    if (y + half < size)  { sum += m_heightMap[y + half][x]; count++; }
+    // слева
+    if (x - half >= 0)    { sum += m_heightMap[y][x - half]; count++; }
+    // справа
+    if (x + half < size)  { sum += m_heightMap[y][x + half]; count++; }
+
+    m_heightMap[y][x] = sum / count + randomRange(-scale, scale);
+}
+double DiamondSquareGenerate::heightValue(int x, int y)
+{
+    double amplitude = 1.0;
+    double frequency = 0.005;   // <- это делает “континенты”
+    double result = 0.0;
+
+    for (int i = 0; i < 5; i++)
+    {
+        double fx = x * frequency;
+        double fy = y * frequency;
+
+        double ix = std::floor(fx);
+        double iy = std::floor(fy);
+
+        double tx = fx - ix;
+        double ty = fy - iy;
+
+        auto h = [&](int px, int py)
+        {
+            uint32_t n = px * 73856093u ^ py * 19349663u ^ m_seed;
+            n = (n << 13) ^ n;
+            return 1.0 - ((n * (n * n * 15731u + 789221u) + 1376312589u)
+                          & 0x7fffffff) / 1073741824.0;
+        };
+
+        double a = h(ix,     iy);
+        double b = h(ix + 1, iy);
+        double c = h(ix,     iy + 1);
+        double d = h(ix + 1, iy + 1);
+
+        double u = tx * tx * (3 - 2 * tx);
+        double v = ty * ty * (3 - 2 * ty);
+
+        double top = a + (b - a) * u;
+        double bottom = c + (d - c) * u;
+        double value = top + (bottom - top) * v;
+
+        result += value * amplitude;
+
+        amplitude *= 0.5;
+        frequency *= 2.0;
+    }
+
+    return result;
+}
 
 double DiamondSquareGenerate::hash(int x, int y) const
 {
@@ -134,28 +270,9 @@ double DiamondSquareGenerate::hash(int x, int y) const
                   & 0x7fffffff) / 1073741824.0;
 }
 
-
-// Находим наименьший бит который ненулевой хотя бы у одной координаты
-// Он и есть размер блока для этой точки
-int DiamondSquareGenerate::blockSize(int x, int y)
-{
-    int base = 1;
-    while (((x & base) == 0) && ((y & base) == 0))
-        base <<= 1;
-    return base;
-}
-
-// Если оба бита выставлены — это square step (центр квадрата)
-// Если только один — это diamond step (середина ребра)
-
-bool DiamondSquareGenerate::isSquare(int x, int y, int base)
-{
-     return ((x & base) != 0) && ((y & base) != 0);
-}
-
 double DiamondSquareGenerate::cornerValue(int worldX, int worldY)
 {
-    uint32_t n = (uint32_t)(worldX * 73856093u) ^ (uint32_t)(worldY * 19349663u) ^ m_seed;
+    int32_t n = (uint32_t)(worldX * 73856093u) ^ (uint32_t)(worldY * 19349663u) ^ m_seed;
     n = (n << 13) ^ n;
     double v = 1.0 - ((n * (n * n * 15731u + 789221u) + 1376312589u)
                       & 0x7fffffff) / 1073741824.0;
@@ -188,62 +305,6 @@ QColor DiamondSquareGenerate::heightToColor(double t)
         }
     }
     return stops[N-1].color;
-}
-
-double DiamondSquareGenerate::getHeight(int x, int y)
-{
-    // За границей карты — 0 (или можно сделать тороидально)
-    if (x < 0 || y < 0 || x > m_worldSize || y > m_worldSize)
-        return 0.0;
-
-    // Угловые точки карты — детерминированы
-    if ((x == 0 || x == m_worldSize) && (y == 0 || y == m_worldSize))
-        return randForPoint(x, y) * m_offset;
-
-    // Уже посчитано — берём из кэша
-    QPoint key(x, y);
-    auto it = m_cache.find(key);
-    if (it != m_cache.end())
-        return it.value();
-
-    // Определяем размер блока и тип шага
-    int base = 1;
-    while (((x & base) == 0) && ((y & base) == 0))
-        base <<= 1;
-
-    double value;
-    double scale = m_offset * (double)base / m_worldSize * m_roughness;
-
-    if (((x & base) != 0) && ((y & base) != 0))
-    {
-        // Square step — центр квадрата, усредняем 4 угла
-        double avg = (getHeight(x - base, y - base)
-                      + getHeight(x + base, y - base)
-                      + getHeight(x - base, y + base)
-                      + getHeight(x + base, y + base)) * 0.25;
-        value = avg + randForPoint(x, y) * scale;
-    }
-    else
-    {
-        // Diamond step — середина ребра, усредняем 4 соседа
-        double avg = (getHeight(x - base, y)
-                      + getHeight(x + base, y)
-                      + getHeight(x,        y - base)
-                      + getHeight(x,        y + base)) * 0.25;
-        value = avg + randForPoint(x, y) * scale;
-    }
-
-    m_cache[key] = value;
-    return value;
-}
-
-double DiamondSquareGenerate::randForPoint(int x, int y)
-{
-    // Хэш координат + seed → псевдослучайное число [-1..1]
-    uint32_t n = (uint32_t)(x * 73856093u) ^ (uint32_t)(y * 19349663u) ^ m_seed;
-    n = (n << 13) ^ n;
-    n = n * (n * n * 15731u + 789221u) + 1376312589u;
-    return (double)(n & 0x7fffffff) / 1073741824.0 - 1.0;  // [-1..1]
 }
 void DiamondSquareGenerate::paint(QPainter *painter)
 {
@@ -289,6 +350,6 @@ void DiamondSquareGenerate::componentComplete()
 {
     QQuickPaintedItem::componentComplete();
 
-
+    generate();
 }
 

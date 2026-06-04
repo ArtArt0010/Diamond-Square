@@ -13,7 +13,7 @@
                     }
                 ],
                 "className": "DiamondSquareGenerate",
-                "lineNumber": 16,
+                "lineNumber": 18,
                 "object": true,
                 "properties": [
                     {
@@ -21,7 +21,7 @@
                         "designable": true,
                         "final": false,
                         "index": 0,
-                        "lineNumber": 22,
+                        "lineNumber": 25,
                         "name": "waterLevel",
                         "notify": "waterLevelChanged",
                         "read": "waterLevel",
@@ -37,7 +37,7 @@
                         "designable": true,
                         "final": false,
                         "index": 1,
-                        "lineNumber": 23,
+                        "lineNumber": 26,
                         "name": "roughness",
                         "notify": "roughnessChanged",
                         "read": "roughness",
@@ -53,7 +53,7 @@
                         "designable": true,
                         "final": false,
                         "index": 2,
-                        "lineNumber": 24,
+                        "lineNumber": 27,
                         "name": "seed",
                         "notify": "seedChanged",
                         "read": "seed",
@@ -69,7 +69,7 @@
                         "designable": true,
                         "final": false,
                         "index": 3,
-                        "lineNumber": 26,
+                        "lineNumber": 30,
                         "name": "camX",
                         "notify": "camChanged",
                         "read": "camX",
@@ -85,7 +85,7 @@
                         "designable": true,
                         "final": false,
                         "index": 4,
-                        "lineNumber": 27,
+                        "lineNumber": 31,
                         "name": "camY",
                         "notify": "camChanged",
                         "read": "camY",
@@ -101,7 +101,7 @@
                         "designable": true,
                         "final": false,
                         "index": 5,
-                        "lineNumber": 28,
+                        "lineNumber": 32,
                         "name": "camScale",
                         "notify": "camChanged",
                         "read": "camScale",
@@ -118,35 +118,35 @@
                     {
                         "access": "public",
                         "index": 0,
-                        "lineNumber": 58,
+                        "lineNumber": 55,
                         "name": "offsetChanged",
                         "returnType": "void"
                     },
                     {
                         "access": "public",
                         "index": 1,
-                        "lineNumber": 59,
+                        "lineNumber": 56,
                         "name": "roughnessChanged",
                         "returnType": "void"
                     },
                     {
                         "access": "public",
                         "index": 2,
-                        "lineNumber": 60,
+                        "lineNumber": 57,
                         "name": "seedChanged",
                         "returnType": "void"
                     },
                     {
                         "access": "public",
                         "index": 3,
-                        "lineNumber": 61,
+                        "lineNumber": 58,
                         "name": "waterLevelChanged",
                         "returnType": "void"
                     },
                     {
                         "access": "public",
                         "index": 4,
-                        "lineNumber": 62,
+                        "lineNumber": 59,
                         "name": "camChanged",
                         "returnType": "void"
                     }
